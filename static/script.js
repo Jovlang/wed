@@ -1,15 +1,7 @@
-// TODO: make this generic and add it to utils file?
-function reverseString(str)
+function loadCSS()
 {
-  var result = "";
-  for (var i = str.length-1; i >= 0; i--)
-    result += str[i];
-  return result;
-}
-
-function reverseEachLine()
-{
-  return $("#buffer")[0].value.split("\n").map(reverseString).join("\n");
+  $("style").remove();
+  $("head").append('<style>' + $("#buffer")[0].value + '</style>');
 }
 
 window.onload = function()
@@ -22,13 +14,13 @@ window.onload = function()
     {
       $("#buffer")[0].value = reader.result;
     }
+    loadCSS();
   }
-  $("#rev_whole")[0].onclick = function(event)
+  $("#load")[0].onclick = loadCSS;
+  document.body.onkeypress = function(event)
   {
-    $("#buffer")[0].value = reverseString($("#buffer")[0].value);
+    if (event.keyCode === 17)
+      loadCSS();
   }
-  $("#rev_lines")[0].onclick = function(event)
-  {
-    $("#buffer")[0].value = reverseEachLine($("#buffer")[0].value);
-  }
+  $("#buffer")[0].value = $("style")[0].innerHTML;
 }
